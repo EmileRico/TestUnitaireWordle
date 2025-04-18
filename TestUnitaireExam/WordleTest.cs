@@ -1,6 +1,4 @@
 ﻿using Wordle_Test;
-using System;
-using Xunit;
 
 public class WordleTest
 {
@@ -21,17 +19,6 @@ public class WordleTest
         var game = new WordleGame();
         var exception = Record.Exception(() => game.CheckGuess(guess));
         Assert.Null(exception);
-    }
-
-    [Theory]
-    [InlineData("A")]
-    [InlineData("ABCD")]
-    [InlineData("12345")]
-    [InlineData("ABCD1")]
-    public void CheckGuess_InvalidInput_ThrowsArgumentException(string guess)
-    {
-        var game = new WordleGame();
-        Assert.Throws<ArgumentException>(() => game.CheckGuess(guess));
     }
 
     [Fact]
@@ -55,7 +42,7 @@ public class WordleTest
     }
 
     [Fact]
-    public void CheckGuess_CorrectGuess_SetsIsWordGuessedTrue()
+    public void CheckGuess_CorrectGuess()
     {
         var game = new WordleGame("CRISP");
         game.CheckGuess("CRISP");
@@ -63,11 +50,65 @@ public class WordleTest
         Assert.True(game.IsGameOver);
     }
 
-    [Fact]
-    public void CheckGuess_NoCorrectLetters_ReturnsAllX()
+    [Theory]
+    [InlineData("ABCDE", true)]
+    [InlineData("ABCD", false)]
+    [InlineData("123456", false)]
+    public void IsFiveLetters(string input, bool expected)
     {
-        var game = new WordleGame("LUCKY");
-        string feedback = game.CheckGuess("TREND");
-        Assert.Equal("XXXXX", feedback);
+        var game = new WordleGame();
+        Assert.Equal(expected, game.IsFiveLetters(input));
+    }
+
+    [Theory]
+    [InlineData("APPLE", true)]
+    [InlineData("abcde", true)]
+    [InlineData("AB1CD", false)]
+    [InlineData("12ABC", false)]
+    public void IsOnlyLetters(string input, bool expected)
+    {
+        var game = new WordleGame();
+        Assert.Equal(expected, game.IsOnlyLetters(input));
+    }
+
+    [Theory]
+    [InlineData("GRAPE", "GRAPE", "GGGGG")]   // Tout correct
+    [InlineData("GRAPE", "PAGAR", "YYYXY")]   // Lettres bien présentes mais mal placées
+    [InlineData("GRAPE", "AAAAA", "XXGXX")]   // Une lettre correcte bien placée (le A)
+    [InlineData("GRAPE", "XXXXX", "XXXXX")]   // Aucun match
+    [InlineData("GRAPE", "EPRAG", "YYYYY")]   // Toutes bonnes lettres mais mal placées
+    [InlineData("LUCKY", "CURLY", "YGXYG")]   // Mix complet
+    public void CheckGuess(string targetWord, string guess, string expectedFeedback)
+    {
+        var game = new WordleGame(targetWord);
+        string actualFeedback = game.CheckGuess(guess);
+        Assert.Equal(expectedFeedback, actualFeedback);
+    }
+
+    [Fact]
+    public void PrintColoredFeedback()
+    {
+        var game = new WordleGame();
+        var exception = Record.Exception(() => game.PrintColoredFeedback("APPLE", "GYXXY"));
+        Assert.Null(exception);
+    }
+
+    [Fact]
+    public void Constructor_ConvertsTargetWordToUpperCase()
+    {
+        var game = new WordleGame("crisp");
+        var feedback = game.CheckGuess("CRISP");
+        Assert.Equal("GGGGG", feedback);
+    }
+
+    [Theory]
+    [InlineData(12, 3, 4.0)]
+    [InlineData(7, 2, 3.5)]
+    [InlineData(0, 0, 0.0)]
+    public void CalculateAverageAttempts_ReturnsCorrectAverage(int totalAttempts, int totalGames, double expected)
+    {
+        var game = new WordleGame();
+        double result = game.CalculateAverageAttempts(totalAttempts, totalGames);
+        Assert.Equal(expected, result, 2);
     }
 }
