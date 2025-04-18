@@ -1,0 +1,57 @@
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build Results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+*.log
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+# Uncomment if using PackageReference
+# !**/packages.config
+
+# Test Results
+TestResults/
+*.TestResults
+*.trx
+*.coverage
+*.coveragexml
+*.codecoverage
+
+# xUnit
+*.xml
+*.xunit.runner.json
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Rider
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*.sln.ide
+
+# OS-specific
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Other
+*.ncrunch*
+*.cache
