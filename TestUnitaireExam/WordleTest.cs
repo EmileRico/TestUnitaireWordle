@@ -14,7 +14,7 @@ public class WordleTest
     [Theory]
     [InlineData("ABCDE")]
     [InlineData("apple")]
-    public void CheckGuess_ValidInput_DoesNotThrowException(string guess)
+    public void CheckGuess_ValidInput(string guess)
     {
         var game = new WordleGame();
         var exception = Record.Exception(() => game.CheckGuess(guess));
@@ -26,7 +26,7 @@ public class WordleTest
     {
         var game = new WordleGame();
         int attemptsBefore = game.RemainingAttempts;
-        game.CheckGuess("CRISP");
+        game.CheckGuess("TESTE");
         Assert.Equal(attemptsBefore - 1, game.RemainingAttempts);
     }
 
@@ -36,7 +36,7 @@ public class WordleTest
         var game = new WordleGame();
         for (int i = 0; i < 6; i++)
         {
-            game.CheckGuess("CRISP");
+            game.CheckGuess("TESTE");
         }
         Assert.True(game.IsGameOver);
     }
@@ -44,8 +44,8 @@ public class WordleTest
     [Fact]
     public void CheckGuess_CorrectGuess()
     {
-        var game = new WordleGame("CRISP");
-        game.CheckGuess("CRISP");
+        var game = new WordleGame("TESTE");
+        game.CheckGuess("TESTE");
         Assert.True(game.IsWordGuessed);
         Assert.True(game.IsGameOver);
     }
@@ -72,12 +72,12 @@ public class WordleTest
     }
 
     [Theory]
-    [InlineData("GRAPE", "GRAPE", "GGGGG")]   // Tout correct
-    [InlineData("GRAPE", "PAGAR", "YYYXY")]   // Lettres bien présentes mais mal placées
-    [InlineData("GRAPE", "AAAAA", "XXGXX")]   // Une lettre correcte bien placée (le A)
-    [InlineData("GRAPE", "XXXXX", "XXXXX")]   // Aucun match
-    [InlineData("GRAPE", "EPRAG", "YYYYY")]   // Toutes bonnes lettres mais mal placées
-    [InlineData("LUCKY", "CURLY", "YGXYG")]   // Mix complet
+    [InlineData("GRAPE", "GRAPE", "GGGGG")]
+    [InlineData("GRAPE", "PAGAR", "YYYXY")]
+    [InlineData("GRAPE", "AAAAA", "XXGXX")]
+    [InlineData("GRAPE", "XXXXX", "XXXXX")]
+    [InlineData("GRAPE", "EPRAG", "YYYYY")]
+    [InlineData("LUCKY", "CURLY", "YGXYG")]
     public void CheckGuess(string targetWord, string guess, string expectedFeedback)
     {
         var game = new WordleGame(targetWord);
@@ -96,8 +96,8 @@ public class WordleTest
     [Fact]
     public void Constructor_ConvertsTargetWordToUpperCase()
     {
-        var game = new WordleGame("crisp");
-        var feedback = game.CheckGuess("CRISP");
+        var game = new WordleGame("teste");
+        var feedback = game.CheckGuess("TESTE");
         Assert.Equal("GGGGG", feedback);
     }
 

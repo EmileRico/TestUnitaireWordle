@@ -19,4 +19,12 @@ dotnet run
 
 ```bash
 dotnet test --collect:"XPlat Code Coverage"
+reportgenerator -reports:"**/coverage.cobertura.xml" -targetdir:"coverage-report"
+start coverage-report/index.html
+```
+
+# si le reportgenerator n'est pas déjà installer 
+
+```bash
+dotnet tool install -g dotnet-reportgenerator-globaltool
 ```
